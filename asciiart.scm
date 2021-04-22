@@ -26,7 +26,17 @@
       (else (cons (/ (apply + (cdr (take ls 4))) 3)
                   (average (drop ls 4)))))))
 
-(define average-values (average (bytes->list pix)))
+;;; luminosity: 0.21 R + 0.72 G + 0.07 B
+(define luminosity
+  (lambda (ls)
+    (if (null? ls) 
+        '()
+        (cons (+ (* 0.21 (cadr ls))
+                 (* 0.72 (caddr ls))
+                 (* 0.07 (cadddr ls)))
+              (luminosity (drop ls 4))))))
+
+(define average-values (luminosity (bytes->list pix)))
 
 ;;; 4. convert brightness to ASCII symbols
 (define asciis "`^,:;Il!i~+_-?][}{1)(|tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$")
